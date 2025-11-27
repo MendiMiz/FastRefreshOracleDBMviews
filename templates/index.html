@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <title>Orders & MV Demo Oracle</title>
+    <!-- Link al file CSS esterno in static/css/style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        // Funzione JavaScript per gestire il refresh tramite API
+        async function handleRefresh(method) {
+            const statusArea = document.getElementById('refresh-status');
+            statusArea.innerHTML = `Avvio refresh ${method === 'F' ? 'FAST' : 'COMPLETE'}...`;
+
+            try {
+                const response = await fetch('/refresh_mv', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ method: method })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    // Se ha successo, mostra il tempo di esecuzione
+                    statusArea.innerHTML = `✅ Refresh ${data.method === 'F' ? 'FAST' : 'COMPLETE'} completato in: <strong>${data.duration} secondi</strong>. Ricarica la pagina per vedere i dati aggiornati.`;
+                } else {
+                    statusArea.innerHTML = `❌ Errore durante il refresh: ${data.message}`;
+                }
+            } catch (error) {
+                statusArea.innerHTML = `❌ Errore di connessione: ${error}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard Ordini Oracle MV</h1>
+
+        <h2>Gestione Refresh Materialized View</h2>
+        <!-- Bottoni che chiamano la funzione JavaScript -->
+        <div class="refresh-form">
+            <button onclick="handleRefresh('F')" class="btn-fast">Aggiorna (FAST REFRESH)</button>
+            <button onclick="handleRefresh('C')" class="btn-complete">Aggiorna (COMPLETE REFRESH)</button>
+            <!-- Area dove verrà stampato il tempo di esecuzione -->
+            <span id="refresh-status"></span>
+        </div>
+
+        <h2>Materialized View ORDERS_MV (Combinata)</h2>
+        <table>
+            <thead>
+                <tr><th>ORDER_ID</th><th>PRODUCT</th><th>AMOUNT</th><th>SOURCE</th></tr>
+            </thead>
+            <tbody>
+                <!-- Il loop Jinja2 corretto che accede agli elementi della tupla per nome -->
+                {% for row in mview %}
+                <tr>
+                    <td>{{ row[0] }}</td> <!-- ORDER_ID -->
+                    <td>{{ row[1] }}</td> <!-- PRODUCT -->
+                    <td>{{ row[2] }}</td> <!-- AMOUNT -->
+                    <td>
+                        <!-- row[3] è il source_marker -->
+                        {% if row[3] == 1 %}
+                            <span class="marker-1">ORDERS</span>
+                        {% else %}
+                            <span class="marker-2">ARCHIVE</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+                <h2>Inserisci in "Orders"</h2>
+                <!-- Questo è un form POST standard per l'inserimento dati -->
+                <form method="post">
+                    <input type="text" name="order_id" placeholder="Order ID" required>
+                    <input type="text" name="customer_id" placeholder="Customer ID" required>
+                    <input type="text" name="product" placeholder="Product" required>
+                    <input type="text" name="amount" placeholder="Amount" required>
+                    <button type="submit" name="insert_orders">Inserisci</button>
+                </form>
+            </div>
+            <div style="flex: 1;">
+                <h2>Inserisci in "Archive"</h2>
+                <!-- Questo è un form POST standard per l'inserimento dati -->
+                <form method="post">
+                    <input type="text" name="archive_order_id" placeholder="Order ID" required>
+                    <input type="text" name="archive_customer_id" placeholder="Customer ID" required>
+                    <input type="text" name="archive_product" placeholder="Product" required>
+                    <input type="text" name="archive_amount" placeholder="Amount" required>
+                    <button type="submit" name="insert_archive">Inserisci</button>
+                </form>
+            </div>
+        </div>
+
+        <h2>Tabella Orders (Attuali)</h2>
+        <table>
+            <thead>
+                <tr><th>ORDER_ID</th><th>CUSTOMER_ID</th><th>PRODUCT</th><th>AMOUNT</th><th>ORDER_DATE</th></tr>
+            </thead>
+            <tbody>
+                {% for row in orders %}
+                <tr>
+                    {% for col in row %}
+                    <td>{{ col }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Tabella Orders Archive (Archiviati)</h2>
+        <table>
+            <thead>
+                <tr><th>ORDER_ID</th><th>CUSTOMER_ID</th><th>PRODUCT</th><th>AMOUNT</th><th>ORDER_DATE</th></tr>
+            </thead>
+            <tbody>
+                {% for row in orders_archive %}
+                <tr>
+                    {% for col in row %}
+                    <td>{{ col }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

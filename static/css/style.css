@@ -1,0 +1,113 @@
+/* General Body Styling */
+body {
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f6; /* Light gray background */
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+h1, h2 {
+    color: #0056b3; /* Primary blue color for headings */
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 10px;
+    margin-top: 30px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    border-radius: 8px;
+    overflow: hidden; /* Ensures rounded corners work with table borders */
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #0056b3;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Zebra striping for readability */
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Form Styling */
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Base button styling */
+form button {
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Stile specifico per il bottone Fast Refresh */
+.btn-fast {
+    background-color: #ffc107; /* Giallo/Ambra */
+    color: #333;
+}
+.btn-fast:hover {
+    background-color: #e0a800;
+}
+
+/* Stile specifico per il bottone Complete Refresh (più aggressivo) */
+.btn-complete {
+    background-color: #dc3545; /* Rosso */
+}
+
+.btn-complete:hover {
+    background-color: #c82333;
+}
+
+/* Stili per i bottoni di inserimento (verdi) */
+button[name="insert_orders"], button[name="insert_archive"] {
+     background-color: #28a745;
+}
+button[name="insert_orders"]:hover, button[name="insert_archive"]:hover {
+    background-color: #218838;
+}
+
+/* Utility classes for markers */
+.marker-1 { color: #0056b3; font-weight: bold; }
+.marker-2 { color: #dc3545; font-weight: bold; }

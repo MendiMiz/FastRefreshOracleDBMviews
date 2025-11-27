@@ -1,0 +1,29 @@
+# Ignora i file di ambiente
+.env
+
+# Node.js (se è un progetto JS)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python (se è un progetto Python)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+env/
+.venv/
+venv/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Logs
+*.log
+
+.idea/
+*.iml

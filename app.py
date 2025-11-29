@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-# Assumi che 'get_connection' sia definito qui
 from config.db import get_connection
 import time
 import os

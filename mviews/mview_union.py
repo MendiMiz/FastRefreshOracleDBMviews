@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_connection():
-    # Assicurati che le variabili d'ambiente DB_USER, DB_PASSWORD e DB_DSN siano impostate
     return oracledb.connect(
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASSWORD"),
@@ -52,8 +51,5 @@ def run():
     conn.close()
 
 if __name__ == "__main__":
-    # Supponendo che lo script di setup sia stato eseguito altrove
-    # print("▶ Setup database")
-    # setup_database.run()
     run()
 

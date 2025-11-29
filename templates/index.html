@@ -4,34 +4,8 @@
     <title>Orders & MV Demo Oracle</title>
     <!-- Link al file CSS esterno in static/css/style.css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script>
-        // Funzione JavaScript per gestire il refresh tramite API
-        async function handleRefresh(method) {
-            const statusArea = document.getElementById('refresh-status');
-            statusArea.innerHTML = `Avvio refresh ${method === 'F' ? 'FAST' : 'COMPLETE'}...`;
-
-            try {
-                const response = await fetch('/refresh_mv', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ method: method })
-                });
-
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    // Se ha successo, mostra il tempo di esecuzione
-                    statusArea.innerHTML = `✅ Refresh ${data.method === 'F' ? 'FAST' : 'COMPLETE'} completato in: <strong>${data.duration} secondi</strong>. Ricarica la pagina per vedere i dati aggiornati.`;
-                } else {
-                    statusArea.innerHTML = `❌ Errore durante il refresh: ${data.message}`;
-                }
-            } catch (error) {
-                statusArea.innerHTML = `❌ Errore di connessione: ${error}`;
-            }
-        }
-    </script>
+    <!-- Link al file JavaScript esterno (Best Practice) -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </head>
 <body>
     <div class="container">
